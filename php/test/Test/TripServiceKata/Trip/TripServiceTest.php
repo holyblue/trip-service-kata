@@ -1,9 +1,11 @@
 <?php
-
 namespace Test\TripServiceKata\Trip;
 
 use PHPUnit\Framework\TestCase;
+use TripServiceKata\Exception\UserNotLoggedInException;
 use TripServiceKata\Trip\TripService;
+use TripServiceKata\User\User;
+use TripServiceKata\User\UserSession;
 
 class TripServiceTest extends TestCase
 {
@@ -14,11 +16,22 @@ class TripServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->tripService = new TripService;
+        $this->tripService = new TripService();
     }
 
-    /** @test */ public function 
-    it_does_something() {
-        $this->fail('This test has not been implemented yet.');
+    public function testGetTripsByNoLoggedUser()
+    {
+        $this->tripService = new NoLoggedTripService();
+        $friend = new User('');
+        $this->expectException(UserNotLoggedInException::class);
+        $this->tripService->getTripsByUser($friend);
+    }
+}
+
+class NoLoggedTripService extends TripService
+{
+    protected function getLoggedUser()
+    {
+        throw new UserNotLoggedInException();
     }
 }
