@@ -5,9 +5,17 @@ namespace TripServiceKata\Trip;
 use TripServiceKata\User\User;
 use TripServiceKata\User\UserSession;
 use TripServiceKata\Exception\UserNotLoggedInException;
+use TripServiceKata\User\IUserSession;
 
 class TripService
 {
+    private $userSession;
+
+    public function __construct(IUserSession $session)
+    {
+        $this->userSession = $session;
+    }
+
     public function getTripsByUser(User $user) {
         $tripList = array();
         $loggedUser = $this->getLoggedUser();
@@ -41,6 +49,6 @@ class TripService
 
     protected function getLoggedUser()
     {
-        return UserSession::getInstance()->getLoggedUser();
+        return $this->userSession->getLoggedUser();
     }
 }

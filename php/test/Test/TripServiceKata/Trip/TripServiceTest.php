@@ -6,7 +6,6 @@ use TripServiceKata\Exception\UserNotLoggedInException;
 use TripServiceKata\Trip\Trip;
 use TripServiceKata\Trip\TripService;
 use TripServiceKata\User\User;
-use TripServiceKata\User\UserSession;
 
 class TripServiceTest extends TestCase
 {
@@ -17,12 +16,12 @@ class TripServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->tripService = new TripService();
+        $this->tripService = new TripService(new FakeUserSession());
     }
 
     public function testGetTripsByNoLoggedUser()
     {
-        $this->tripService = new NoLoggedTripService();
+        $this->tripService = new NoLoggedTripService(new FakeUserSession());
         $friend = new User('');
         $this->expectException(UserNotLoggedInException::class);
         $this->tripService->getTripsByUser($friend);
@@ -30,7 +29,7 @@ class TripServiceTest extends TestCase
 
     public function testShouldNotReturnTripsWhenNotFriend()
     {
-        $this->tripService = new NotFriendTripsService();
+        $this->tripService = new NotFriendTripsService(new FakeUserSession());
         $notfriend = new User('');
         $trips = $this->tripService->getTripsByUser($notfriend);
         $this->assertEquals([], $trips, 'get no trips when not friend');
@@ -38,7 +37,7 @@ class TripServiceTest extends TestCase
 
     public function testShouldReturnTripsWhenLoggedUserIsFriend()
     {
-        $this->tripService = new FriendTripsService();
+        $this->tripService = new FriendTripsService(new FakeUserSession());
         $friend = new User('friend');
         $trips = $this->tripService->getTripsByUser($friend);
         $this->assertNotEmpty($trips);
