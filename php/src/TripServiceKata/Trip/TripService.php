@@ -11,21 +11,32 @@ class TripService
     public function getTripsByUser(User $user) {
         $tripList = array();
         $loggedUser = $this->getLoggedUser();
-        $isFriend = false;
+        $isFriend = $this->isFriend();
+
         if ($loggedUser != null) {
             foreach ($user->getFriends() as $friend) {
-                if ($friend == $loggedUser) {
+                if ($friend === $loggedUser) {
                     $isFriend = true;
                     break;
                 }
             }
             if ($isFriend) {
-                $tripList = TripDAO::findTripsByUser($user);
+                $tripList = $this->getTrips($user);
             }
             return $tripList;
         } else {
             throw new UserNotLoggedInException();
         }
+    }
+
+    protected function isFriend()
+    {
+        return false;
+    }
+
+    protected function getTrips(User $user)
+    {
+        return TripDAO::findTripsByUser($user);
     }
 
     protected function getLoggedUser()
