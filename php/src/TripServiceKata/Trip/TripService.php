@@ -33,6 +33,7 @@ class TripService
 
     protected function getTrips(User $user)
     {
-        return TripDAO::findTripsByUser($user);
+        $tripRepository = new TripRepository();
+        return $tripRepository->findTripsByUser($user);
     }
 }
