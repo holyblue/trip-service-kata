@@ -17,6 +17,11 @@ class User
         $this->friends = array();
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function getTrips()
     {
         return $this->trips;
