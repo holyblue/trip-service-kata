@@ -16,7 +16,7 @@ class TripServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->tripService = new TripService(new NotLoggedUserSession());
+        $this->tripService = new TripService(new NotLoggedUserSession(), new FakeTripRepository());
     }
 
     public function testGetTripsByNoLoggedUser()
@@ -28,7 +28,7 @@ class TripServiceTest extends TestCase
 
     public function testShouldNotReturnTripsWhenNotFriend()
     {
-        $this->tripService = new TripService(new LoggedUserSession());
+        $this->tripService = new TripService(new LoggedUserSession(), new FakeTripRepository());
         $notFriend = new User('');
         $trips = $this->tripService->getTripsByUser($notFriend);
         $this->assertEquals([], $trips, 'get no trips when not friend');
@@ -37,19 +37,10 @@ class TripServiceTest extends TestCase
     public function testShouldReturnTripsWhenLoggedUserIsFriend()
     {
         $userSession = new LoggedUserSession();
-        $this->tripService = new FriendTripsService($userSession);
+        $this->tripService = new TripService($userSession, new FakeTripRepository());
         $user = new User('friend');
         $user->addFriend($userSession->getLoggedUser());
         $trips = $this->tripService->getTripsByUser($user);
         $this->assertNotEmpty($trips);
-    }
-}
-
-class FriendTripsService extends TripService
-{
-    protected function getTrips(User $user)
-    {
-        $trips[] = new Trip();
-        return $trips;
     }
 }

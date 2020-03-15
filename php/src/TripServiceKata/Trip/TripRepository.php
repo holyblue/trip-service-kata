@@ -3,9 +3,8 @@
 namespace TripServiceKata\Trip;
 
 use TripServiceKata\User\User;
-use TripServiceKata\Exception\DependentClassCalledDuringUnitTestException;
 
-class TripRepository
+class TripRepository implements ITripRepository
 {
     public function findTripsByUser(User $user)
     {

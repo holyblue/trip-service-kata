@@ -9,10 +9,12 @@ use TripServiceKata\User\IUserSession;
 class TripService
 {
     private $userSession;
+    private $tripRepository;
 
-    public function __construct(IUserSession $session)
+    public function __construct(IUserSession $session, ITripRepository $repository)
     {
         $this->userSession = $session;
+        $this->tripRepository = $repository;
     }
 
     public function getTripsByUser(User $user) {
@@ -33,7 +35,6 @@ class TripService
 
     protected function getTrips(User $user)
     {
-        $tripRepository = new TripRepository();
-        return $tripRepository->findTripsByUser($user);
+        return $this->tripRepository->findTripsByUser($user);
     }
 }
