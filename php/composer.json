@@ -27,5 +27,7 @@
       "psr-4": {
         "Test\\": "test/Test/"
       }
+    },
+    "require": {
     }
 }
