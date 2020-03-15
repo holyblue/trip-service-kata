@@ -29,8 +29,8 @@ class TripServiceTest extends TestCase
     public function testShouldNotReturnTripsWhenNotFriend()
     {
         $this->tripService = new NotFriendTripsService(new LoggedUserSession());
-        $notfriend = new User('');
-        $trips = $this->tripService->getTripsByUser($notfriend);
+        $notFriend = new User('');
+        $trips = $this->tripService->getTripsByUser($notFriend);
         $this->assertEquals([], $trips, 'get no trips when not friend');
     }
 
@@ -58,7 +58,7 @@ class FriendTripsService extends TripService
         return true;
     }
 
-    protected function getTrips(\TripServiceKata\User\User $user)
+    protected function getTrips(User $user)
     {
         $trips[] = new Trip();
         return $trips;
