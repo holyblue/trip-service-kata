@@ -10,14 +10,9 @@ use TripServiceKata\User\User;
 
 class FakeTripRepository implements ITripRepository
 {
-
     public function findTripsByUser(User $user)
     {
-        if ($user !== null) {
-            $trips[] = new Trip();
-            return $trips;
-        } else {
-            return null;
-        }
+        $trips[] = new Trip();
+        return $trips;
     }
 }
