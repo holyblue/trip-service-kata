@@ -4,7 +4,7 @@ namespace TripServiceKata\User;
 
 use TripServiceKata\Exception\DependentClassCalledDuringUnitTestException;
 
-class UserSession extends IUserSession
+class UserSession implements IUserSession
 {
     /**
      * @var UserSession
